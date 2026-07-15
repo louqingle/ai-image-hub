@@ -3,1082 +3,519 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>秒镜算力 AI - AI 图片生成平台</title>
+  <title>AI图片生成平台 - 提交需求生成预览方案</title>
   <style>
     * {
+      box-sizing: border-box;
       margin: 0;
       padding: 0;
-      box-sizing: border-box;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
     }
 
     body {
-      background: #080b14;
-      color: #ffffff;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+      background: radial-gradient(circle at top, #243bff 0%, #101427 38%, #070914 100%);
+      color: #fff;
       min-height: 100vh;
     }
 
-    a {
-      text-decoration: none;
-      color: inherit;
+    .container {
+      width: 100%;
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 20px 16px 60px;
     }
 
-    .app {
-      min-height: 100vh;
+    .nav {
       display: flex;
-      background:
-        radial-gradient(circle at 20% 10%, rgba(65, 105, 255, 0.28), transparent 28%),
-        radial-gradient(circle at 90% 30%, rgba(0, 220, 180, 0.2), transparent 25%),
-        radial-gradient(circle at 50% 100%, rgba(168, 85, 247, 0.24), transparent 35%),
-        linear-gradient(180deg, #080b14 0%, #0d1222 55%, #080b14 100%);
-    }
-
-    .sidebar {
-      width: 250px;
-      min-height: 100vh;
-      padding: 22px 16px;
-      background: rgba(10, 15, 30, 0.88);
-      border-right: 1px solid rgba(148, 163, 184, 0.14);
-      backdrop-filter: blur(18px);
-      position: fixed;
-      left: 0;
-      top: 0;
-      bottom: 0;
-      z-index: 20;
-    }
-
-    .brand {
-      display: flex;
+      justify-content: space-between;
       align-items: center;
-      gap: 12px;
-      margin-bottom: 30px;
-      padding: 0 8px;
+      padding: 16px 0;
     }
 
     .logo {
-      width: 42px;
-      height: 42px;
-      border-radius: 15px;
-      background: linear-gradient(135deg, #2563eb, #22c55e, #a855f7);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 950;
-      box-shadow: 0 0 28px rgba(37, 99, 235, 0.45);
-    }
-
-    .brand-text h1 {
-      font-size: 18px;
-      line-height: 1.1;
-    }
-
-    .brand-text p {
-      color: #94a3b8;
-      font-size: 12px;
-      margin-top: 3px;
-    }
-
-    .menu-title {
-      color: #64748b;
-      font-size: 12px;
+      font-size: 22px;
       font-weight: 800;
-      margin: 18px 8px 10px;
       letter-spacing: 1px;
     }
 
-    .menu-item {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding: 13px 14px;
-      border-radius: 16px;
-      color: #cbd5e1;
-      font-weight: 700;
-      margin-bottom: 7px;
-      cursor: pointer;
-      transition: 0.2s;
+    .logo span {
+      color: #7cf7ff;
     }
 
-    .menu-item:hover {
-      background: rgba(148, 163, 184, 0.12);
+    .nav-btn {
+      background: rgba(255, 255, 255, 0.12);
+      border: 1px solid rgba(255, 255, 255, 0.22);
       color: #fff;
-    }
-
-    .menu-item.active {
-      background: linear-gradient(135deg, rgba(37, 99, 235, 0.35), rgba(6, 182, 212, 0.22));
-      color: #fff;
-      border: 1px solid rgba(96, 165, 250, 0.3);
-    }
-
-    .main {
-      margin-left: 250px;
-      width: calc(100% - 250px);
-      min-height: 100vh;
-    }
-
-    .topbar {
-      height: 72px;
-      padding: 0 28px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      background: rgba(8, 11, 20, 0.68);
-      backdrop-filter: blur(18px);
-      border-bottom: 1px solid rgba(148, 163, 184, 0.12);
-      position: sticky;
-      top: 0;
-      z-index: 10;
-    }
-
-    .search {
-      width: min(480px, 55vw);
-      height: 44px;
       border-radius: 999px;
-      background: rgba(15, 23, 42, 0.8);
-      border: 1px solid rgba(148, 163, 184, 0.16);
-      display: flex;
-      align-items: center;
-      padding: 0 16px;
-      color: #94a3b8;
+      padding: 8px 14px;
       font-size: 14px;
-    }
-
-    .top-actions {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .coin {
-      padding: 10px 14px;
-      border-radius: 999px;
-      background: rgba(250, 204, 21, 0.13);
-      color: #fde68a;
-      border: 1px solid rgba(250, 204, 21, 0.22);
-      font-weight: 800;
-      font-size: 14px;
-    }
-
-    .login-btn {
-      padding: 11px 18px;
-      border: none;
-      border-radius: 999px;
-      color: #fff;
-      background: linear-gradient(135deg, #2563eb, #06b6d4);
-      font-weight: 850;
-      cursor: pointer;
-      box-shadow: 0 12px 28px rgba(37, 99, 235, 0.28);
-    }
-
-    .content {
-      max-width: 1180px;
-      margin: 0 auto;
-      padding: 38px 24px 80px;
+      text-decoration: none;
     }
 
     .hero {
-      display: grid;
-      grid-template-columns: 1.1fr 0.9fr;
-      gap: 24px;
-      align-items: stretch;
-      margin-bottom: 26px;
-    }
-
-    .hero-card {
-      padding: 38px;
-      border-radius: 32px;
-      background:
-        linear-gradient(135deg, rgba(37, 99, 235, 0.24), rgba(168, 85, 247, 0.18)),
-        rgba(15, 23, 42, 0.74);
-      border: 1px solid rgba(148, 163, 184, 0.16);
-      box-shadow: 0 28px 70px rgba(0,0,0,0.24);
-      overflow: hidden;
-      position: relative;
-    }
-
-    .hero-card::after {
-      content: "";
-      position: absolute;
-      width: 260px;
-      height: 260px;
-      border-radius: 50%;
-      right: -90px;
-      top: -80px;
-      background: radial-gradient(circle, rgba(56, 189, 248, 0.36), transparent 68%);
+      text-align: center;
+      padding: 42px 0 28px;
     }
 
     .tag {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 8px 14px;
+      display: inline-block;
+      padding: 7px 14px;
       border-radius: 999px;
-      background: rgba(15, 23, 42, 0.72);
-      color: #93c5fd;
-      border: 1px solid rgba(96, 165, 250, 0.22);
+      background: rgba(124, 247, 255, 0.13);
+      color: #7cf7ff;
+      border: 1px solid rgba(124, 247, 255, 0.35);
       font-size: 13px;
-      font-weight: 800;
-      margin-bottom: 20px;
-    }
-
-    .hero h2 {
-      font-size: clamp(34px, 5vw, 58px);
-      line-height: 1.08;
-      letter-spacing: -2px;
       margin-bottom: 18px;
-      position: relative;
-      z-index: 1;
     }
 
-    .hero h2 span {
-      background: linear-gradient(135deg, #60a5fa, #34d399, #c084fc);
-      -webkit-background-clip: text;
-      color: transparent;
+    h1 {
+      font-size: 38px;
+      line-height: 1.18;
+      margin-bottom: 16px;
     }
 
     .hero p {
-      color: #cbd5e1;
-      font-size: 17px;
-      line-height: 1.75;
-      max-width: 650px;
-      margin-bottom: 24px;
-      position: relative;
-      z-index: 1;
-    }
-
-    .hero-buttons {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-      position: relative;
-      z-index: 1;
-    }
-
-    .primary,
-    .ghost {
-      border: none;
-      cursor: pointer;
-      padding: 14px 22px;
-      border-radius: 999px;
+      color: #cbd5ff;
       font-size: 16px;
-      font-weight: 850;
-      transition: 0.2s;
-    }
-
-    .primary {
-      color: white;
-      background: linear-gradient(135deg, #2563eb, #06b6d4);
-      box-shadow: 0 16px 32px rgba(37, 99, 235, 0.32);
-    }
-
-    .ghost {
-      color: #dbeafe;
-      background: rgba(15, 23, 42, 0.76);
-      border: 1px solid rgba(148, 163, 184, 0.22);
-    }
-
-    .primary:hover,
-    .ghost:hover {
-      transform: translateY(-2px);
-    }
-
-    .stats-card {
-      padding: 26px;
-      border-radius: 32px;
-      background: rgba(15, 23, 42, 0.74);
-      border: 1px solid rgba(148, 163, 184, 0.16);
-      box-shadow: 0 28px 70px rgba(0,0,0,0.2);
-    }
-
-    .stat-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 14px;
-      margin-bottom: 20px;
-    }
-
-    .stat {
-      padding: 18px;
-      border-radius: 22px;
-      background: rgba(2, 6, 23, 0.62);
-      border: 1px solid rgba(148, 163, 184, 0.12);
-    }
-
-    .stat strong {
-      display: block;
-      font-size: 28px;
-      margin-bottom: 5px;
-    }
-
-    .stat span {
-      color: #94a3b8;
-      font-size: 13px;
-      font-weight: 700;
-    }
-
-    .notice {
-      padding: 16px;
-      border-radius: 22px;
-      background: rgba(34, 197, 94, 0.1);
-      border: 1px solid rgba(34, 197, 94, 0.2);
-      color: #bbf7d0;
-      font-size: 14px;
-      line-height: 1.7;
-      font-weight: 700;
+      line-height: 1.8;
+      max-width: 760px;
+      margin: 0 auto;
     }
 
     .panel {
+      margin-top: 26px;
+      background: rgba(255, 255, 255, 0.09);
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      border-radius: 24px;
+      padding: 20px;
+      box-shadow: 0 20px 70px rgba(0, 0, 0, 0.35);
+      backdrop-filter: blur(16px);
+    }
+
+    .form-grid {
       display: grid;
-      grid-template-columns: 1fr 0.88fr;
-      gap: 24px;
-      margin-bottom: 32px;
-    }
-
-    .generator,
-    .result-box {
-      padding: 26px;
-      border-radius: 30px;
-      background: rgba(15, 23, 42, 0.76);
-      border: 1px solid rgba(148, 163, 184, 0.16);
-      box-shadow: 0 24px 58px rgba(0,0,0,0.22);
-    }
-
-    .block-title {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 20px;
-    }
-
-    .block-title h3 {
-      font-size: 24px;
-    }
-
-    .block-title span {
-      color: #94a3b8;
-      font-size: 13px;
-      font-weight: 800;
-    }
-
-    .tabs {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      margin-bottom: 18px;
-    }
-
-    .tab {
-      padding: 10px 14px;
-      border-radius: 999px;
-      background: rgba(2, 6, 23, 0.62);
-      border: 1px solid rgba(148, 163, 184, 0.14);
-      color: #cbd5e1;
-      font-size: 14px;
-      font-weight: 800;
-      cursor: pointer;
-    }
-
-    .tab.active {
-      background: linear-gradient(135deg, #2563eb, #06b6d4);
-      color: #fff;
-      border-color: transparent;
-    }
-
-    textarea {
-      width: 100%;
-      min-height: 150px;
-      resize: vertical;
-      border: 1px solid rgba(148, 163, 184, 0.18);
-      background: rgba(2, 6, 23, 0.66);
-      color: #fff;
-      border-radius: 20px;
-      padding: 18px;
-      outline: none;
-      font-size: 15px;
-      line-height: 1.7;
-      margin-bottom: 16px;
-    }
-
-    textarea::placeholder {
-      color: #64748b;
-    }
-
-    .form-row {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 12px;
-      margin-bottom: 18px;
-    }
-
-    select {
-      width: 100%;
-      padding: 13px 14px;
-      border-radius: 16px;
-      background: rgba(2, 6, 23, 0.66);
-      color: #e2e8f0;
-      border: 1px solid rgba(148, 163, 184, 0.18);
-      outline: none;
-      font-weight: 700;
-    }
-
-    .generate-btn {
-      width: 100%;
-      height: 52px;
-      border: none;
-      border-radius: 18px;
-      color: white;
-      background: linear-gradient(135deg, #2563eb, #7c3aed, #06b6d4);
-      font-weight: 950;
-      font-size: 17px;
-      cursor: pointer;
-      box-shadow: 0 18px 35px rgba(37, 99, 235, 0.25);
-    }
-
-    .preview-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
+      grid-template-columns: 1fr 1fr;
       gap: 14px;
     }
 
-    .preview {
-      aspect-ratio: 1/1;
-      border-radius: 22px;
-      background:
-        linear-gradient(135deg, rgba(37, 99, 235, 0.25), rgba(168, 85, 247, 0.2)),
-        rgba(2, 6, 23, 0.65);
-      border: 1px solid rgba(148, 163, 184, 0.14);
+    .field {
       display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #94a3b8;
-      font-weight: 850;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    label {
+      color: #e8ebff;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      outline: none;
+      border-radius: 14px;
+      padding: 13px 14px;
+      background: rgba(4, 8, 25, 0.72);
+      color: #fff;
+      font-size: 15px;
+    }
+
+    textarea {
+      min-height: 130px;
+      resize: vertical;
+    }
+
+    input::placeholder,
+    textarea::placeholder {
+      color: #7982a6;
+    }
+
+    .full {
+      grid-column: 1 / -1;
+    }
+
+    .btn-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    button, .wechat-btn {
+      border: none;
+      border-radius: 15px;
+      padding: 14px 16px;
+      color: #fff;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
       text-align: center;
-      padding: 15px;
-      overflow: hidden;
-      position: relative;
+      text-decoration: none;
     }
 
-    .preview:nth-child(2) {
-      background:
-        linear-gradient(135deg, rgba(16, 185, 129, 0.24), rgba(37, 99, 235, 0.18)),
-        rgba(2, 6, 23, 0.65);
+    .primary {
+      background: linear-gradient(135deg, #6c7cff, #00d5ff);
+      box-shadow: 0 10px 28px rgba(0, 213, 255, 0.25);
     }
 
-    .preview:nth-child(3) {
-      background:
-        linear-gradient(135deg, rgba(249, 115, 22, 0.22), rgba(168, 85, 247, 0.18)),
-        rgba(2, 6, 23, 0.65);
+    .secondary {
+      background: linear-gradient(135deg, #8e54ff, #ff5fd2);
+      box-shadow: 0 10px 28px rgba(255, 95, 210, 0.22);
     }
 
-    .preview:nth-child(4) {
-      background:
-        linear-gradient(135deg, rgba(236, 72, 153, 0.24), rgba(6, 182, 212, 0.18)),
-        rgba(2, 6, 23, 0.65);
+    .wechat-btn {
+      background: linear-gradient(135deg, #18c964, #00e0a4);
+      display: block;
     }
 
-    .section-title {
-      margin: 44px 0 20px;
-      display: flex;
-      justify-content: space-between;
-      align-items: end;
-      gap: 16px;
+    .result {
+      display: none;
+      margin-top: 18px;
+      padding: 18px;
+      border-radius: 18px;
+      background: rgba(0, 0, 0, 0.28);
+      border: 1px solid rgba(124, 247, 255, 0.22);
     }
 
-    .section-title h3 {
-      font-size: 28px;
+    .result h3 {
+      margin-bottom: 10px;
+      color: #7cf7ff;
     }
 
-    .section-title p {
-      color: #94a3b8;
-      line-height: 1.6;
+    .result p {
+      color: #dce2ff;
+      line-height: 1.75;
+      font-size: 15px;
+    }
+
+    .copy-box {
+      margin-top: 12px;
+      padding: 14px;
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 14px;
+      color: #fff;
+      line-height: 1.75;
+      white-space: pre-wrap;
       font-size: 14px;
     }
 
-    .model-grid {
+    .cards {
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 16px;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      margin-top: 26px;
     }
 
-    .model-card {
-      padding: 22px;
-      border-radius: 26px;
-      background: rgba(15, 23, 42, 0.74);
-      border: 1px solid rgba(148, 163, 184, 0.15);
-      transition: 0.2s;
+    .card {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      border-radius: 20px;
+      padding: 18px;
     }
 
-    .model-card:hover {
-      transform: translateY(-4px);
-      border-color: rgba(96, 165, 250, 0.4);
-    }
-
-    .model-icon {
-      width: 48px;
-      height: 48px;
-      border-radius: 18px;
-      background: linear-gradient(135deg, #2563eb, #06b6d4);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 950;
-      margin-bottom: 16px;
-    }
-
-    .model-card h4 {
-      font-size: 18px;
+    .card h3 {
+      font-size: 17px;
       margin-bottom: 8px;
     }
 
-    .model-card p {
-      color: #94a3b8;
+    .card p {
+      color: #cbd5ff;
       font-size: 14px;
-      line-height: 1.7;
-    }
-
-    .price-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 16px;
-    }
-
-    .price-card {
-      padding: 26px;
-      border-radius: 28px;
-      background: rgba(15, 23, 42, 0.76);
-      border: 1px solid rgba(148, 163, 184, 0.16);
-      position: relative;
-    }
-
-    .price-card.hot {
-      border-color: rgba(96, 165, 250, 0.48);
-      background: linear-gradient(180deg, rgba(37, 99, 235, 0.22), rgba(15, 23, 42, 0.76));
-    }
-
-    .hot-label {
-      position: absolute;
-      top: -12px;
-      right: 20px;
-      padding: 7px 13px;
-      border-radius: 999px;
-      background: linear-gradient(135deg, #2563eb, #06b6d4);
-      font-size: 12px;
-      font-weight: 950;
-    }
-
-    .price-card h4 {
-      font-size: 21px;
-      margin-bottom: 12px;
+      line-height: 1.65;
     }
 
     .price {
-      font-size: 38px;
-      font-weight: 950;
-      margin-bottom: 8px;
-    }
-
-    .price span {
-      font-size: 14px;
-      color: #94a3b8;
-    }
-
-    .price-card p {
-      color: #94a3b8;
-      font-size: 14px;
-      line-height: 1.7;
-      margin-bottom: 18px;
-    }
-
-    .price-card ul {
-      list-style: none;
-      margin-bottom: 22px;
-    }
-
-    .price-card li {
-      color: #cbd5e1;
-      margin-bottom: 10px;
-      font-size: 14px;
-    }
-
-    .price-card li::before {
-      content: "✓ ";
-      color: #22c55e;
-      font-weight: 950;
-    }
-
-    .price-btn {
-      width: 100%;
-      height: 46px;
-      border: none;
-      border-radius: 16px;
-      color: white;
-      background: rgba(37, 99, 235, 0.9);
-      font-weight: 900;
-      cursor: pointer;
-    }
-
-    .footer {
-      margin-top: 54px;
-      padding: 28px;
-      border-radius: 28px;
-      background: rgba(15, 23, 42, 0.76);
-      border: 1px solid rgba(148, 163, 184, 0.14);
-      text-align: center;
-      color: #94a3b8;
-      line-height: 1.8;
-    }
-
-    .toast {
-      position: fixed;
-      top: 86px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: #111827;
-      color: #fff;
-      padding: 12px 18px;
-      border-radius: 999px;
-      display: none;
-      z-index: 99;
-      box-shadow: 0 16px 40px rgba(0,0,0,0.25);
-      font-weight: 800;
-    }
-
-    .modal-mask {
-      position: fixed;
-      inset: 0;
-      display: none;
-      align-items: center;
-      justify-content: center;
-      background: rgba(0,0,0,0.58);
-      z-index: 80;
+      margin-top: 28px;
+      background: linear-gradient(135deg, rgba(108,124,255,0.18), rgba(0,213,255,0.12));
+      border: 1px solid rgba(124, 247, 255, 0.22);
+      border-radius: 22px;
       padding: 20px;
     }
 
-    .modal {
-      width: min(430px, 100%);
-      padding: 28px;
-      border-radius: 28px;
-      background: #0f172a;
-      border: 1px solid rgba(148, 163, 184, 0.18);
-      box-shadow: 0 30px 80px rgba(0,0,0,0.38);
-      text-align: center;
-    }
-
-    .modal h3 {
-      font-size: 25px;
+    .price h2 {
       margin-bottom: 12px;
     }
 
-    .modal p {
-      color: #94a3b8;
-      line-height: 1.7;
-      margin-bottom: 18px;
-    }
-
-    .contact-box {
-      padding: 16px;
-      border-radius: 18px;
-      background: rgba(2, 6, 23, 0.72);
-      border: 1px solid rgba(148, 163, 184, 0.16);
-      margin-bottom: 18px;
-      font-weight: 900;
-      color: #93c5fd;
-    }
-
-    .modal-actions {
+    .price-list {
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: repeat(3, 1fr);
       gap: 12px;
     }
 
-    .modal-actions button {
-      height: 44px;
-      border: none;
-      border-radius: 15px;
-      cursor: pointer;
-      font-weight: 900;
+    .price-item {
+      background: rgba(0,0,0,0.22);
+      border-radius: 16px;
+      padding: 16px;
     }
 
-    .close {
-      background: rgba(148, 163, 184, 0.16);
-      color: #cbd5e1;
+    .price-item strong {
+      display: block;
+      font-size: 20px;
+      margin-bottom: 6px;
+      color: #7cf7ff;
     }
 
-    .copy {
-      background: linear-gradient(135deg, #2563eb, #06b6d4);
+    .price-item span {
+      color: #d7dcff;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .footer {
+      text-align: center;
+      color: #8f98c7;
+      font-size: 13px;
+      margin-top: 34px;
+      line-height: 1.8;
+    }
+
+    .float-contact {
+      position: fixed;
+      right: 16px;
+      bottom: 18px;
+      background: linear-gradient(135deg, #18c964, #00e0a4);
       color: #fff;
+      border-radius: 999px;
+      padding: 12px 17px;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 700;
+      box-shadow: 0 12px 30px rgba(0, 224, 164, 0.28);
+      z-index: 9;
     }
 
-    @media (max-width: 980px) {
-      .sidebar {
-        display: none;
+    @media (max-width: 760px) {
+      h1 {
+        font-size: 30px;
       }
 
-      .main {
-        margin-left: 0;
-        width: 100%;
+      .form-grid,
+      .cards,
+      .price-list,
+      .btn-row {
+        grid-template-columns: 1fr;
       }
 
-      .hero,
+      .hero {
+        padding-top: 28px;
+      }
+
       .panel {
-        grid-template-columns: 1fr;
-      }
-
-      .model-grid,
-      .price-grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
-
-      .search {
-        display: none;
-      }
-    }
-
-    @media (max-width: 640px) {
-      .topbar {
-        padding: 0 16px;
-      }
-
-      .coin {
-        display: none;
-      }
-
-      .content {
-        padding: 24px 14px 60px;
-      }
-
-      .hero-card,
-      .stats-card,
-      .generator,
-      .result-box {
-        padding: 22px;
-        border-radius: 24px;
-      }
-
-      .form-row,
-      .model-grid,
-      .price-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .preview-grid {
-        grid-template-columns: 1fr 1fr;
-      }
-
-      .section-title {
-        display: block;
-      }
-
-      .section-title p {
-        margin-top: 8px;
+        padding: 16px;
       }
     }
   </style>
 </head>
 <body>
-  <div class="app">
-    <aside class="sidebar">
-      <div class="brand">
-        <div class="logo">M</div>
-        <div class="brand-text">
-          <h1>秒镜算力 AI</h1>
-          <p>AI Model Hub</p>
-        </div>
-      </div>
+  <a class="float-contact" href="javascript:void(0)" onclick="showWechat()">联系客服</a>
 
-      <div class="menu-title">AI 能力</div>
-      <div class="menu-item">💬 AI 对话</div>
-      <div class="menu-item active">🖼️ AI 图片生成</div>
-      <div class="menu-item">🎬 AI 视频生成</div>
-      <div class="menu-item">📚 AI 漫画</div>
-      <div class="menu-item">🛒 电商图生成</div>
-      <div class="menu-item">🎙️ AI 配音</div>
-      <div class="menu-item">✍️ AI 写作</div>
+  <div class="container">
+    <div class="nav">
+      <div class="logo">AI<span>图片生成</span>平台</div>
+      <a class="nav-btn" href="javascript:void(0)" onclick="showWechat()">微信：LikY05922</a>
+    </div>
 
-      <div class="menu-title">开发者</div>
-      <div class="menu-item">🔑 API 密钥</div>
-      <div class="menu-item">📄 接口文档</div>
-      <div class="menu-item">💳 套餐充值</div>
-    </aside>
-
-    <main class="main">
-      <header class="topbar">
-        <div class="search">🔍 搜索 AI 模型、图片风格、创作工具...</div>
-        <div class="top-actions">
-          <div class="coin">⚡ 免费体验 20 积分</div>
-          <button class="login-btn" onclick="openModal()">登录 / 开通</button>
-        </div>
-      </header>
-
-      <div class="content">
-        <section class="hero">
-          <div class="hero-card">
-            <div class="tag">🔥 AI 图片生成 · 多模型聚合平台</div>
-            <h2>一句话生成<br><span>高质量 AI 图片</span></h2>
-            <p>
-              聚合多种主流 AI 图像模型，支持文生图、图生图、电商图、头像、海报、写实摄影、国风插画等场景。
-              适合短视频封面、商品主图、广告素材和个人创作。
-            </p>
-            <div class="hero-buttons">
-              <button class="primary" onclick="scrollToCreate()">立即生成图片</button>
-              <button class="ghost" onclick="openModal()">联系客服开通</button>
-            </div>
-          </div>
-
-          <div class="stats-card">
-            <div class="stat-grid">
-              <div class="stat">
-                <strong>30+</strong>
-                <span>图片模型</span>
-              </div>
-              <div class="stat">
-                <strong>100+</strong>
-                <span>创作风格</span>
-              </div>
-              <div class="stat">
-                <strong>4K</strong>
-                <span>高清出图</span>
-              </div>
-              <div class="stat">
-                <strong>API</strong>
-                <span>支持接入</span>
-              </div>
-            </div>
-            <div class="notice">
-              新用户可免费体验，支持中文提示词，一键生成海报、头像、商品图、短视频封面。
-            </div>
-          </div>
-        </section>
-
-        <section class="panel" id="create">
-          <div class="generator">
-            <div class="block-title">
-              <h3>AI 图片生成</h3>
-              <span>Text To Image</span>
-            </div>
-
-            <div class="tabs">
-              <div class="tab active">文生图</div>
-              <div class="tab">图生图</div>
-              <div class="tab">电商图</div>
-              <div class="tab">头像</div>
-              <div class="tab">海报</div>
-            </div>
-
-            <textarea id="prompt" placeholder="请输入你想生成的画面，例如：一个未来感 AI 女机器人，站在蓝色霓虹城市中，电影级光影，超清细节，商业海报风格..."></textarea>
-
-            <div class="form-row">
-              <select>
-                <option>通用高清模型</option>
-                <option>写实摄影模型</option>
-                <option>二次元插画模型</option>
-                <option>电商产品图模型</option>
-              </select>
-
-              <select>
-                <option>1:1 方图</option>
-                <option>9:16 竖屏</option>
-                <option>16:9 横屏</option>
-                <option>3:4 海报</option>
-              </select>
-
-              <select>
-                <option>生成 1 张</option>
-                <option>生成 2 张</option>
-                <option>生成 4 张</option>
-              </select>
-            </div>
-
-            <button class="generate-btn" onclick="fakeGenerate()">开始生成</button>
-          </div>
-
-          <div class="result-box">
-            <div class="block-title">
-              <h3>生成预览</h3>
-              <span>Demo Preview</span>
-            </div>
-
-            <div class="preview-grid">
-              <div class="preview">AI 海报<br>预览区</div>
-              <div class="preview">商品主图<br>预览区</div>
-              <div class="preview">写实人像<br>预览区</div>
-              <div class="preview">短视频封面<br>预览区</div>
-            </div>
-          </div>
-        </section>
-
-        <section>
-          <div class="section-title">
-            <div>
-              <h3>热门创作模型</h3>
-              <p>可包装成你的平台模型库，用于对外展示服务能力。</p>
-            </div>
-          </div>
-
-          <div class="model-grid">
-            <div class="model-card">
-              <div class="model-icon">G</div>
-              <h4>高清通用模型</h4>
-              <p>适合海报、头像、插画、封面等大多数图片场景。</p>
-            </div>
-
-            <div class="model-card">
-              <div class="model-icon">P</div>
-              <h4>写实摄影模型</h4>
-              <p>适合真人质感、商业摄影、产品摄影、场景大片。</p>
-            </div>
-
-            <div class="model-card">
-              <div class="model-icon">E</div>
-              <h4>电商商品图</h4>
-              <p>适合主图、详情图、场景图、模特穿搭图。</p>
-            </div>
-
-            <div class="model-card">
-              <div class="model-icon">A</div>
-              <h4>动漫插画模型</h4>
-              <p>适合二次元头像、漫画角色、游戏人物设定。</p>
-            </div>
-          </div>
-        </section>
-
-        <section>
-          <div class="section-title">
-            <div>
-              <h3>开通套餐</h3>
-              <p>你可以用这个页面卖 AI 图片生成次数、API 接入服务或代生成服务。</p>
-            </div>
-          </div>
-
-          <div class="price-grid">
-            <div class="price-card">
-              <h4>体验版</h4>
-              <div class="price">29 <span>元</span></div>
-              <p>适合个人体验 AI 图片生成。</p>
-              <ul>
-                <li>100 次图片生成</li>
-                <li>基础模型可用</li>
-                <li>支持中文提示词</li>
-                <li>客服基础指导</li>
-              </ul>
-              <button class="price-btn" onclick="openModal()">立即开通</button>
-            </div>
-
-            <div class="price-card hot">
-              <div class="hot-label">推荐</div>
-              <h4>创作者版</h4>
-              <div class="price">99 <span>元</span></div>
-              <p>适合短视频、电商、自媒体日常使用。</p>
-              <ul>
-                <li>500 次图片生成</li>
-                <li>高级模型可用</li>
-                <li>支持高清出图</li>
-                <li>赠送提示词模板</li>
-              </ul>
-              <button class="price-btn" onclick="openModal()">开通套餐</button>
-            </div>
-
-            <div class="price-card">
-              <h4>项目接入版</h4>
-              <div class="price">699 <span>元起</span></div>
-              <p>适合网站、小程序、智能体接入 AI 图片能力。</p>
-              <ul>
-                <li>API 接入方案</li>
-                <li>接口配置指导</li>
-                <li>模型调用测试</li>
-                <li>项目部署建议</li>
-              </ul>
-              <button class="price-btn" onclick="openModal()">咨询接入</button>
-            </div>
-          </div>
-        </section>
-
-        <footer class="footer">
-          <strong>秒镜算力 AI</strong><br>
-          AI 图片生成 / AI 模型聚合 / API 接入服务平台<br>
-          © 2026 秒镜算力 AI. All Rights Reserved.
-        </footer>
-      </div>
-    </main>
-  </div>
-
-  <div class="toast" id="toast">已提交生成任务</div>
-
-  <div class="modal-mask" id="modalMask">
-    <div class="modal">
-      <h3>联系客服开通</h3>
+    <section class="hero">
+      <div class="tag">AI绘图 / 商品图 / 头像图 / 海报图 / 美女写真 / 场景图</div>
+      <h1>提交你的图片需求<br />生成专属预览方案</h1>
       <p>
-        添加客服后，发送你的需求：AI 图片生成、套餐开通、API 接入、网站搭建、模型配置。
+        输入你想要的画面、风格和用途，系统会自动整理成专业 AI 绘图方案。
+        如需高清成图、商用出图、批量生成，请联系客服微信：<strong>LikY05922</strong>
       </p>
-      <div class="contact-box">微信 / 客服：miaojing-ai</div>
+    </section>
 
-      <div class="modal-actions">
-        <button class="close" onclick="closeModal()">关闭</button>
-        <button class="copy" onclick="copyContact()">复制微信</button>
+    <section class="panel">
+      <div class="form-grid">
+        <div class="field">
+          <label>图片用途</label>
+          <select id="usage">
+            <option>小红书封面图</option>
+            <option>朋友圈营销图</option>
+            <option>电商商品图</option>
+            <option>AI美女写真</option>
+            <option>短视频首帧图</option>
+            <option>品牌海报图</option>
+            <option>头像 / IP形象</option>
+            <option>其他用途</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label>图片风格</label>
+          <select id="style">
+            <option>高级真实摄影风</option>
+            <option>赛博朋克风</option>
+            <option>国风古风</option>
+            <option>二次元动漫风</option>
+            <option>商业海报风</option>
+            <option>电影质感风</option>
+            <option>极简高级风</option>
+            <option>可爱治愈风</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label>画面比例</label>
+          <select id="ratio">
+            <option>9:16 竖屏手机图</option>
+            <option>1:1 正方形</option>
+            <option>3:4 小红书封面</option>
+            <option>16:9 横屏封面</option>
+            <option>4:3 商品展示图</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label>出图数量</label>
+          <select id="count">
+            <option>1张预览图</option>
+            <option>3张精选图</option>
+            <option>5张成套图</option>
+            <option>10张批量图</option>
+          </select>
+        </div>
+
+        <div class="field full">
+          <label>描述你的图片需求</label>
+          <textarea id="desc" placeholder="例如：一个穿白色西装的AI女模特，站在未来科技展厅里，灯光高级，画面真实，适合做小红书封面..."></textarea>
+        </div>
       </div>
+
+      <div class="btn-row">
+        <button class="primary" onclick="submitNeed()">提交需求</button>
+        <button class="secondary" onclick="makePreview()">生成预览方案</button>
+        <a class="wechat-btn" href="javascript:void(0)" onclick="showWechat()">联系客服出图</a>
+      </div>
+
+      <div class="result" id="result">
+        <h3>你的预览方案已生成</h3>
+        <p>
+          系统已根据你的需求生成了一份 AI 绘图方案。  
+          如果你需要高清成图、无水印图片、商用版本或批量出图，请添加客服微信：
+          <strong>LikY05922</strong>
+        </p>
+        <div class="copy-box" id="copyText"></div>
+        <button class="primary" style="margin-top:12px;width:100%;" onclick="copyPlan()">复制方案，发给客服</button>
+      </div>
+    </section>
+
+    <section class="cards">
+      <div class="card">
+        <h3>1. 提交需求</h3>
+        <p>填写图片用途、风格、比例和画面描述，系统会帮你整理成专业出图需求。</p>
+      </div>
+
+      <div class="card">
+        <h3>2. 生成预览方案</h3>
+        <p>自动生成适合 AI 绘图的提示词方案，方便确认画面方向和出图风格。</p>
+      </div>
+
+      <div class="card">
+        <h3>3. 联系客服出图</h3>
+        <p>添加微信 LikY05922，发送方案后可安排高清出图、修改和批量制作。</p>
+      </div>
+    </section>
+
+    <section class="price">
+      <h2>服务参考</h2>
+      <div class="price-list">
+        <div class="price-item">
+          <strong>基础出图</strong>
+          <span>适合头像、封面、简单海报，快速生成预览图。</span>
+        </div>
+
+        <div class="price-item">
+          <strong>商用精修</strong>
+          <span>适合产品图、营销图、品牌图，可根据需求优化细节。</span>
+        </div>
+
+        <div class="price-item">
+          <strong>批量定制</strong>
+          <span>适合矩阵账号、电商素材、短视频封面批量制作。</span>
+        </div>
+      </div>
+    </section>
+
+    <div class="footer">
+      © AI图片生成平台<br />
+      客服微信：LikY05922 ｜ 提交需求 · 生成预览方案 · 联系客服出图
     </div>
   </div>
 
   <script>
-    function showToast(text) {
-      const toast = document.getElementById("toast");
-      toast.innerText = text;
-      toast.style.display = "block";
+    const WECHAT = "LikY05922";
 
-      setTimeout(function() {
-        toast.style.display = "none";
-      }, 1800);
+    function getFormData() {
+      const usage = document.getElementById("usage").value;
+      const style = document.getElementById("style").value;
+      const ratio = document.getElementById("ratio").value;
+      const count = document.getElementById("count").value;
+      const desc = document.getElementById("desc").value.trim();
+
+      return { usage, style, ratio, count, desc };
     }
 
-    function fakeGenerate() {
-      const prompt = document.getElementById("prompt").value.trim();
+    function submitNeed() {
+      const data = getFormData();
 
-      if (!prompt) {
-        showToast("请先输入图片提示词");
+      if (!data.desc) {
+        alert("请先填写你的图片需求，例如人物、场景、风格、用途。");
         return;
       }
 
-      showToast("演示站：生成任务已模拟提交");
-
-      const previews = document.querySelectorAll(".preview");
-      previews.forEach(function(item, index) {
-        item.innerHTML = "生成中...<br>Demo " + (index + 1);
-      });
-
-      setTimeout(function() {
-        previews[0].innerHTML = "未来感海报<br>生成完成";
-        previews[1].innerHTML = "商业产品图<br>生成完成";
-        previews[2].innerHTML = "写实人像图<br>生成完成";
-        previews[3].innerHTML = "短视频封面<br>生成完成";
-      }, 1200);
+      makePreview();
+      alert("需求已提交，请复制方案后添加客服微信：" + WECHAT);
     }
 
-    function openModal() {
-      document.getElementById("modalMask").style.display = "flex";
-    }
+    function makePreview() {
+      const data = getFormData();
 
-    function closeModal() {
-      document.getElementById("modalMask").style.display = "none";
-    }
-
-    function copyContact() {
-      navigator.clipboard.writeText("miaojing-ai").then(function() {
-        showToast("微信号已复制");
-        closeModal();
-      });
-    }
-
-    function scrollToCreate() {
-      document.getElementById("create").scrollIntoView({
-        behavior: "smooth"
-      });
-    }
-
-    document.getElementById("modalMask").addEventListener("click", function(e) {
-      if (e.target.id === "modalMask") {
-        closeModal();
+      if (!data.desc) {
+        alert("请先填写你的图片需求，再生成预览方案。");
+        return;
       }
-    });
+
+      const plan =
+`【AI图片生成需求】
+
+图片用途：${data.usage}
+图片风格：${data.style}
+画面比例：${data.ratio}
+出图数量：${data.count}
+
+画面描述：
+${data.desc}
+
+专业生成提示词：
+请生成一张${data.style}的${data.usage}，画面比例为${data.ratio}。主体描述为：${data.desc}。要求画面清晰，高级质感，构图稳定，细节丰富，光影自然，适合商业展示和社交媒体发布。
+
+我需要高清成图/修改/批量出图。
+客服微信：${WECHAT}`;
+
+      document.getElementById("copyText").innerText = plan;
+      document.getElementById("result").style.display = "block";
+      document.getElementById("result").scrollIntoView({ behavior: "smooth" });
+    }
+
+    function copyPlan() {
+      const text = document.getElementById("copyText").innerText;
+
+      if (!text) {
+        alert("请先生成预览方案。");
+        return;
+      }
+
+      navigator.clipboard.writeText(text).then(() => {
+        alert("方案已复制，添加客服微信：" + WECHAT);
+      }).catch(() => {
+        alert("复制失败，请手动长按复制。客服微信：" + WECHAT);
+      });
+    }
+
+    function showWechat() {
+      alert("客服微信：" + WECHAT + "\\n请复制微信号添加客服，发送你的图片需求。");
+    }
   </script>
 </body>
 </html>
